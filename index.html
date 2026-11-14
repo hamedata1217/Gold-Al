@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827"><meta name="description" content="Gold AI - داشبورد تحلیل تکنیکال طلا">
+<link rel="manifest" href="./manifest.json"><link rel="icon" href="./icon.svg" type="image/svg+xml">
+<title>Gold AI | تحلیل طلا</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#131e30;--line:#26364d;--gold:#e8bd55;--muted:#a9b6c8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif}
+header{padding:20px 16px 14px;background:linear-gradient(135deg,#17263d,#0b1220);border-bottom:1px solid var(--line)}
+h1{margin:0;color:var(--gold);font-size:24px}header p{margin:7px 0 0;color:var(--muted);font-size:13px}
+main{max-width:980px;margin:auto;padding:14px;display:grid;gap:14px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px}
+h2{font-size:16px;margin:0 0 12px}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tab,button{border:1px solid var(--line);background:#1b2a40;color:#fff;border-radius:10px;padding:10px 14px;font-size:14px}.tab.active{background:#6f531b;border-color:var(--gold);color:#fff}
+#chart{height:440px;width:100%;overflow:hidden;border-radius:10px}.tvbox{min-height:390px;width:100%;overflow:hidden}.tvbox iframe{width:100%;height:390px;border:0}
+.note{font-size:12px;line-height:1.9;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}button.primary{background:#76591c;border-color:#b38a34}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:10px 16px 28px}
+@media(max-width:560px){#chart{height:390px}.panel{padding:11px}header{padding-top:18px}}
+</style></head>
+<body>
+<header><h1>🥇 Gold AI</h1><p>داشبورد بررسی تکنیکال XAUUSD · مناسب آیفون</p></header>
+<main>
+<section class="panel"><h2>نمودار زنده طلا</h2><div class="tabs" role="group" aria-label="تایم فریم">
+<button class="tab active" data-tf="1">۱ دقیقه</button><button class="tab" data-tf="5">۵ دقیقه</button><button class="tab" data-tf="15">۱۵ دقیقه</button>
+</div><div id="chart" style="margin-top:12px"><iframe id="chartframe" title="نمودار XAUUSD" src="https://www.tradingview.com/widgetembed/?frameElementId=tv_chart&symbol=OANDA%3AXAUUSD&interval=1&hidesidetoolbar=1&symboledit=1&saveimage=0&toolbarbg=131e30&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&hideideas=1& studies=EMA%40tv-basicstudies%1FRSI%40tv-basicstudies" style="width:100%;height:100%;border:0" allowfullscreen></iframe></div></section>
+<section class="panel"><h2>خلاصه تکنیکال TradingView</h2><p class="note">این بخش رتبه‌بندی تکنیکال منبع TradingView را برای نماد انتخابی نمایش می‌دهد؛ سیگنال قطعی یا تضمین سود نیست.</p><div class="tabs"><button class="tab active" data-rating="1">۱ دقیقه</button><button class="tab" data-rating="5">۵ دقیقه</button><button class="tab" data-rating="15">۱۵ دقیقه</button></div><div id="rating" class="tvbox" style="margin-top:12px"><iframe title="تحلیل تکنیکال" src="https://www.tradingview.com/widgetembed/?frameElementId=tv_technical&symbol=OANDA%3AXAUUSD&interval=1&hidesidetoolbar=1&symboledit=1&theme=dark&style=1&timezone=Etc%2FUTC&hideideas=1&studies=MASimple%40tv-basicstudies" loading="lazy"></iframe></div></section>
+<section class="panel"><h2>راهنمای نصب روی آیفون</h2><p class="note">پس از انتشار برنامه، در Safari آن را باز کن، دکمه Share را بزن و گزینه Add to Home Screen را انتخاب کن. اگر این گزینه را نمی‌بینی، صفحه را در Safari باز کن نه داخل مرورگر برنامه‌های دیگر.</p><div class="actions"><button class="primary" id="install" hidden>نصب برنامه</button><button id="refresh">بارگذاری دوباره</button></div></section>
+<section class="panel"><h2>هشدار مهم</h2><p class="note">قیمت OANDA در TradingView ممکن است با قیمت، اسپرد و اجرای سفارش بروکر Eplanet متفاوت باشد. پیش از هر معامله، قیمت خود بروکر را بررسی کن. این ابزار صرفاً برای اطلاع‌رسانی و تحلیل است و توصیه مالی نیست.</p></section>
+</main><footer>Gold AI · ابزار کمکی تحلیل بازار، نه مشاوره سرمایه‌گذاری</footer>
+<script>
+const chart=document.getElementById('chartframe');
+document.querySelectorAll('[data-tf]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tf]').forEach(x=>x.classList.toggle('active',x===b));const tf=b.dataset.tf;chart.src='https://www.tradingview.com/widgetembed/?frameElementId=tv_chart&symbol=OANDA%3AXAUUSD&interval='+tf+'&hidesidetoolbar=1&symboledit=1&saveimage=0&toolbarbg=131e30&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&hideideas=1';}));
+const rating=document.getElementById('rating');
+document.querySelectorAll('[data-rating]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-rating]').forEach(x=>x.classList.toggle('active',x===b));const tf=b.dataset.rating;rating.innerHTML='<iframe title="تحلیل تکنیکال" loading="lazy" src="https://www.tradingview.com/widgetembed/?frameElementId=tv_technical&symbol=OANDA%3AXAUUSD&interval='+tf+'&hidesidetoolbar=1&symboledit=1&theme=dark&style=1&timezone=Etc%2FUTC&hideideas=1"></iframe>';}));
+document.getElementById('refresh').addEventListener('click',()=>location.reload());
+let installEvent;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvent=e;const btn=document.getElementById('install');btn.hidden=false;btn.onclick=async()=>{installEvent.prompt();installEvent=null;btn.hidden=true;}});
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script></body></html>
