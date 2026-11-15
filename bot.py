@@ -160,9 +160,10 @@ async def signal_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for tf in ("1m", "5m", "15m"):
             item = result["timeframes"][tf]
             lines.append(
-                f"⏱ {tf}: {item['label']} | امتیاز {item['score']}/5\n"
+                f"⏱ {tf}: {item['label']}\n"
+                f"امتیاز خرید: {item['buy_score']}/5 | امتیاز فروش: {item['sell_score']}/5\n"
                 f"قیمت بسته‌شدن: {item['close']:.3f}\n"
-                f"دلایل: {', '.join(item['reasons']) if item['reasons'] else 'شرط قوی هم‌جهت دیده نشد'}"
+                f"دلایل: {', '.join(item['reasons']) if item['reasons'] else 'تأیید کافی وجود ندارد'}"
             )
             lines.append("")
         lines.append(f"جمع‌بندی: {result['summary']}")
