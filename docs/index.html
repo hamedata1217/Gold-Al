@@ -19,6 +19,7 @@ h1{font-size:22px;margin:8px 0 4px}.sub{color:var(--muted);font-size:12px;margin
 .notice{border:1px solid #594923;background:#211b10;color:#d7c28c;border-radius:14px;padding:12px 14px;font-size:11px;line-height:1.9;margin-top:13px}
 .tabs{position:fixed;bottom:0;left:0;right:0;background:#0c1016ed;backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:10px 18px calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:space-around;max-width:720px;margin:auto}.tabs button{border:0;background:none;color:var(--muted);font:inherit;font-size:10px;display:grid;justify-items:center;gap:4px}.tabs button span{font-size:19px}.tabs button.active{color:var(--gold)}
 footer{text-align:center;color:#687382;font-size:10px;margin:20px 0 8px}
+\n.trade-plan{display:grid;grid-template-columns:1fr 1fr;gap:10px}.trade-side{background:var(--panel2);border:1px solid var(--line);border-radius:15px;padding:13px}.trade-side.buy{border-color:#286b58}.trade-side.sell{border-color:#713b43}.trade-side h3{margin:0 0 8px;font-size:14px}.trade-side.buy h3{color:var(--green)}.trade-side.sell h3{color:var(--red)}.trade-side .trade-state{font-size:10px;color:var(--muted);margin-bottom:11px;line-height:1.7}.trade-level{display:flex;justify-content:space-between;gap:6px;border-top:1px solid var(--line);padding:9px 0;font-size:11px}.trade-level span{color:var(--muted)}.trade-level b{font-variant-numeric:tabular-nums;color:#dce2e9}.trade-disclaimer{margin-top:11px;border:1px solid #594923;background:#211b10;color:#d7c28c;border-radius:12px;padding:11px;font-size:10px;line-height:1.9}@media(max-width:390px){.trade-plan{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -43,6 +44,18 @@ footer{text-align:center;color:#687382;font-size:10px;margin:20px 0 8px}
 <div class="section-head"><h2>نمودار قیمت</h2><span>کندل‌ها</span></div>
 <div class="tf" role="group" aria-label="تایم فریم"><button class="active" data-tf="1m">۱ دقیقه</button><button data-tf="5m">۵ دقیقه</button><button data-tf="15m">۱۵ دقیقه</button></div>
 <div class="chart" id="chart" style="margin-top:10px"><div>▥<br><b>نمودار پس از اتصال داده نمایش داده می‌شود</b><br>برای جلوگیری از نمایش قیمت ساختگی، فعلاً چارت خالی است.</div></div>
+<div class="section-head" id="trade-plan"><h2>نقشه ورود و خروج</h2><span>BUY / SELL · XAU/USD</span></div>
+<section class="card">
+ <div class="trade-plan">
+  <div class="trade-side buy"><h3>▲ سناریوی BUY</h3><div class="trade-state" id="buyPlanState">در انتظار کندل معتبر؛ هنوز ورود تأیید نشده است.</div>
+   <div class="trade-level"><span>ورود (Entry)</span><b id="buyEntry">—</b></div><div class="trade-level"><span>حد سود (TP)</span><b id="buyTp">—</b></div><div class="trade-level"><span>حد ضرر (SL)</span><b id="buySl">—</b></div>
+  </div>
+  <div class="trade-side sell"><h3>▼ سناریوی SELL</h3><div class="trade-state" id="sellPlanState">در انتظار کندل معتبر؛ هنوز ورود تأیید نشده است.</div>
+   <div class="trade-level"><span>ورود (Entry)</span><b id="sellEntry">—</b></div><div class="trade-level"><span>حد سود (TP)</span><b id="sellTp">—</b></div><div class="trade-level"><span>حد ضرر (SL)</span><b id="sellSl">—</b></div>
+  </div>
+ </div>
+ <div class="trade-disclaimer">قیمت‌ها فعلاً نمایش داده نمی‌شوند؛ چارت TradingView داخل قاب جداگانه است و این صفحه به داده کندل‌های آن دسترسی محاسباتی ندارد. تا اتصال منبع کندل تازه و قابل‌اعتماد، هیچ عدد ورود، حد سود یا حد ضرر ساخته نمی‌شود. نرخ Eplanet نیز ممکن است با OANDA متفاوت باشد.</div>
+</section>
 <div class="section-head"><h2>وضعیت سیگنال</h2><span>تحلیل چندتایم‌فریمی</span></div>
 <section class="card">
  <div class="signal"><div class="signal-icon">✦</div><div><b>در انتظار داده بازار</b><p>هنوز سیگنال خرید یا فروش معتبر محاسبه نشده است.</p></div></div>
@@ -61,5 +74,5 @@ refreshGoldPrice();setInterval(refreshGoldPrice,30000);updateSessions();setInter
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js" crossorigin="anonymous"></script>
-<script src="./chart.js?v=3"></script>
+<script src="./chart.js?v=4"></script>
 </body></html>
