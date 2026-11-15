@@ -1,4 +1,4 @@
-const CACHE = "gold-ai-shell-v4";
+const CACHE = "gold-ai-shell-v5";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./chart.js"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)));
