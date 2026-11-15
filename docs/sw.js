@@ -1,4 +1,4 @@
-const CACHE = "gold-ai-shell-v6";
+const CACHE = "gold-ai-shell-v7";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./chart.js"];
 
 self.addEventListener("install", event => {
@@ -22,7 +22,7 @@ self.addEventListener("fetch", event => {
   if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) return;
 
   const isNavigation = request.mode === "navigate";
-  const isAppAsset = /\\.(?:js|css|html|webmanifest)$/.test(new URL(request.url).pathname);
+  const isAppAsset = /\.(?:js|css|html|webmanifest)$/.test(new URL(request.url).pathname);
 
   if (isNavigation || isAppAsset) {
     event.respondWith((async () => {
