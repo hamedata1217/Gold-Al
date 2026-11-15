@@ -71,15 +71,8 @@
   async function run() {
     if(busy)return;busy=true;
     try {
-      // Strict quote freshness: a stale/closed-market quote must never create a signal.
-      const quote=await json(API+"/api/XAUUSD");
-      const quoteTime=Date.parse(quote.timestamp||quote.lastQuoteAt||"");
-      const age=Number.isFinite(Number(quote.quoteAgeSeconds))?Number(quote.quoteAgeSeconds):(Date.now()-quoteTime)/1000;
-      const price=Number(quote.mid||quote.bid);
-      if(!Number.isFinite(price)||price<=0)throw new Error("قیمت مرجع معتبر دریافت نشد.");
-      if(quote.marketState==="closed"||quote.stale===true||!Number.isFinite(age)||age>180||age< -30) {
-        throw new Error("بازار بسته است یا آخرین قیمت قدیمی است؛ نمودار ممکن است کندل‌های قبلی را نشان دهد، اما سیگنال زنده صادر نمی‌شود.");
-      }
+      // Use the same OHLC feed as the chart. The latest completed 1m candle
+      // supplies the reference price; no separate quote endpoint is assumed.
       const results=await Promise.all(TIMEFRAMES.map(async tf=>{
         const d=await json(API+"/api/XAUUSD/ohlc?interval="+tf.key+"&limit=180");
         if(!Array.isArray(d.bars))throw new Error("ساختار کندل "+tf.key+" معتبر نیست");
@@ -93,21 +86,29 @@
         return {tf,bars,ind:analyze(bars)};
       }));
       const map=Object.fromEntries(results.map(x=>[x.tf.key,x]));
+      const oneMinuteBars=map["1m"].bars;
+      const lastOneMinute=oneMinuteBars[oneMinuteBars.length-1];
+      const price=lastOneMinute.close;
+      const quoteTime=lastOneMinute.time+60000;
+      const quoteAge=(Date.now()-quoteTime)/1000;
+      if(!Number.isFinite(price)||price<=0||!Number.isFinite(quoteAge)||quoteAge>180||quoteAge< -30) {
+        throw new Error("آخرین کندل یک‌دقیقه‌ای تازه نیست؛ سیگنال زنده صادر نمی‌شود.");
+      }
       const a=map["1m"].ind,b=map["5m"].ind,c=map["15m"].ind;
       const buy=a.score>=3&&b.score>=3&&c.score>=2;
       const sell=a.score<=-3&&b.score<=-3&&c.score<=-2;
       const side=buy?"BUY":sell?"SELL":"NONE";
-      const strength=Math.round((Math.abs(a.score)+Math.abs(b.score)+Math.abs(c.score))/12*100);
+      const alignment=Math.abs(a.score)+Math.abs(b.score)+Math.abs(c.score);
       set("tf1State",(a.score>0?"صعودی":a.score<0?"نزولی":"خنثی")+" · RSI "+a.rsi.toFixed(0));
       set("tf5State",(b.score>0?"صعودی":b.score<0?"نزولی":"خنثی")+" · RSI "+b.rsi.toFixed(0));
       set("tf15State",(c.score>0?"صعودی":c.score<0?"نزولی":"خنثی")+" · RSI "+c.rsi.toFixed(0));
-      set("signalStrength",strength+"٪");
+      set("signalStrength",alignment+" از ۱۲");
       if(side==="NONE"){
         set("signalTitle","NO TRADE · فعلاً ورود نکن");
         set("signalText","تایم‌فریم‌ها هم‌جهت نیستند یا قدرت تأیید کافی وجود ندارد. قیمت مرجع داده: "+fmt(price));
         clearPlan("شرایط ورود کامل نیست؛ منتظر تأیید بعدی بمان.");
       } else {
-        const baseAtr=Math.max(a.atr,b.atr/Math.sqrt(5),c.atr/Math.sqrt(15));
+        const baseAtr=a.atr;
         const entry=price, sl=side==="BUY"?entry-1.5*baseAtr:entry+1.5*baseAtr;
         const tp1=side==="BUY"?entry+1.5*baseAtr:entry-1.5*baseAtr;
         const tp2=side==="BUY"?entry+2.5*baseAtr:entry-2.5*baseAtr;
@@ -119,7 +120,7 @@
         set("manageEntry",fmt(entry));set("manageSl",fmt(sl));set("manageTp1",fmt(tp1));set("manageTp2",fmt(tp2));
       }
       const stamp=new Date(quoteTime).toLocaleTimeString("fa-IR");
-      set("signalText",($("signalText")?.textContent||"")+" · آخرین تیک: "+stamp);
+      set("signalText",($("signalText")?.textContent||"")+" · زمان آخرین کندل بسته‌شده: "+stamp);
     } catch(err) {
       ["tf1State","tf5State","tf15State","signalStrength"].forEach(id=>set(id,"داده معتبر نیست"));
       set("signalTitle","NO TRADE · داده تأیید نشد");
