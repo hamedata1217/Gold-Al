@@ -12,7 +12,7 @@
 header{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 22px}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#f8d77d,#a87921);display:grid;place-items:center;color:#17120a;font-weight:900;font-size:22px;box-shadow:0 5px 24px #d9a83b30}.brand b{font-size:18px;letter-spacing:.3px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.status{border:1px solid #644f24;color:#e9bd55;background:#2a2111;padding:7px 10px;border-radius:30px;font-size:11px;white-space:nowrap}
 h1{font-size:22px;margin:8px 0 4px}.sub{color:var(--muted);font-size:12px;margin:0 0 18px}.card{background:linear-gradient(145deg,#171c24,#10141a);border:1px solid var(--line);border-radius:20px;padding:17px;margin-bottom:13px;box-shadow:0 10px 35px #0003}.price-top{display:flex;justify-content:space-between;align-items:center}.eyebrow{color:var(--muted);font-size:12px}.symbol{font-size:13px;color:var(--gold);font-weight:700}.price{font-size:34px;font-weight:750;letter-spacing:.5px;margin:15px 0 4px}.unavailable{font-size:12px;color:var(--muted)}.price-foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:17px;padding-top:13px;color:var(--muted);font-size:11px}
 .section-head{display:flex;justify-content:space-between;align-items:center;margin:21px 2px 11px}.section-head h2{font-size:15px;margin:0}.section-head span{font-size:11px;color:var(--muted)}
-.tf{display:flex;gap:7px}.tf button,.tab button{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:10px;padding:8px 13px;font:inherit;font-size:12px}.tf button.active{background:#3a2c12;border-color:#8b6929;color:var(--gold)}
+.session-list{display:grid;gap:9px}.session-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:12px}.session-name{font-size:13px;font-weight:700}.session-meta{font-size:10px;color:var(--muted);margin-top:4px}.session-time{text-align:left;font-size:12px;font-weight:700;white-space:nowrap}.session-state{font-size:10px;margin-top:4px;color:var(--muted)}.session-state.open{color:var(--green)}.session-state.closed{color:var(--red)}.news-frame{width:100%;height:570px;border:1px solid var(--line);border-radius:15px;background:#10141a}.news-note{color:var(--muted);font-size:11px;line-height:1.8;margin-top:9px}.tf{display:flex;gap:7px}.tf button,.tab button{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:10px;padding:8px 13px;font:inherit;font-size:12px}.tf button.active{background:#3a2c12;border-color:#8b6929;color:var(--gold)}
 .chart{height:190px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#141a22,#0e1218);display:grid;place-items:center;text-align:center;padding:20px;color:var(--muted);font-size:12px;line-height:1.9;position:relative;overflow:hidden}.chart:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 37px,#ffffff08 38px),repeating-linear-gradient(90deg,transparent 0 48px,#ffffff07 49px)}.chart>*{position:relative}
 .signal{display:flex;align-items:center;gap:12px}.signal-icon{width:42px;height:42px;border-radius:13px;background:#252a32;display:grid;place-items:center;color:var(--gold);font-size:20px}.signal b{font-size:14px}.signal p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.7}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.metric{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:13px}.metric small{color:var(--muted);font-size:11px}.metric strong{display:block;margin-top:9px;font-size:14px;color:#dce2e9}
@@ -26,9 +26,20 @@ footer{text-align:center;color:#687382;font-size:10px;margin:20px 0 8px}
 <h1>داشبورد بازار</h1><p class="sub">نمای کلی XAU/USD · ابزار تحلیل تکنیکال</p>
 <section class="card">
  <div class="price-top"><span class="eyebrow">قیمت جهانی طلا</span><span class="symbol">XAU / USD</span></div>
- <div class="price" id="goldPrice">— — —</div><div class="unavailable" id="priceMessage">در حال دریافت قیمت مرجع جهانی طلا…</div>
+ <div class="price" id="goldPrice">— — —</div><div class="unavailable" id="priceMessage">در حال دریافت قیمت مرجع جهانی طلا…</div><button onclick="refreshGoldPrice()" style="margin-top:10px;border:1px solid var(--line);background:var(--panel2);color:var(--gold);border-radius:9px;padding:8px 12px;font:inherit;font-size:11px">↻ تلاش دوباره برای دریافت قیمت</button>
  <div class="price-foot"><span id="priceUpdated">آخرین به‌روزرسانی: —</span><span>منبع: Gold API · قیمت مرجع جهانی</span></div>
 </section>
+<div class="section-head" id="market-hours"><h2>🕒 ساعت بازارهای مهم</h2><span>به وقت محلی هر بازار</span></div>
+<section class="card"><div class="session-list" id="sessionList">
+<div class="session-row"><div><div class="session-name">🇯🇵 توکیو / آسیا</div><div class="session-meta">۰۹:۰۰ تا ۱۸:۰۰ به وقت توکیو</div></div><div class="session-time">--:--<div class="session-state">در حال بررسی…</div></div></div>
+<div class="session-row"><div><div class="session-name">🇬🇧 لندن / اروپا</div><div class="session-meta">۰۸:۰۰ تا ۱۷:۰۰ به وقت لندن</div></div><div class="session-time">--:--<div class="session-state">در حال بررسی…</div></div></div>
+<div class="session-row"><div><div class="session-name">🇺🇸 نیویورک / آمریکا</div><div class="session-meta">۰۸:۰۰ تا ۱۷:۰۰ به وقت نیویورک</div></div><div class="session-time">--:--<div class="session-state">در حال بررسی…</div></div></div>
+<div class="session-row"><div><div class="session-name">🇦🇺 سیدنی / اقیانوسیه</div><div class="session-meta">۰۸:۰۰ تا ۱۷:۰۰ به وقت سیدنی</div></div><div class="session-time">--:--<div class="session-state">در حال بررسی…</div></div></div>
+</div><div class="notice">ساعت‌ها تقریبیِ ساعات رایج فعالیت بازار فارکس هستند؛ تعطیلات رسمی و تغییر ساعت تابستانی می‌توانند بر نقدشوندگی اثر بگذارند. بازار طلا (XAU/USD) معمولاً در روزهای کاری تقریباً ۲۴ ساعته فعال است؛ این‌ها زمان‌بندی سشن‌های اصلی‌اند، نه ساعت باز و بسته‌شدن قطعی طلا.</div></section>
+<div class="section-head" id="economic-news"><h2>📰 اخبار و رویدادهای اثرگذار</h2><span>تقویم اقتصادی</span></div>
+<section class="card"><p class="sub">رویدادهای مهم اقتصادی، با تمرکز روی ارزهای اصلی و دلار آمریکا؛ انتشار CPI، اشتغال آمریکا (NFP)، تصمیم نرخ بهره فدرال رزرو و PCE می‌تواند نوسان طلا را زیاد کند.</p>
+<iframe class="news-frame" src="https://www.macrosetup.com/embed/news-calendar?theme=dark" title="تقویم اخبار اقتصادی بااهمیت" loading="lazy" referrerpolicy="no-referrer"></iframe>
+<div class="news-note">تقویم از سرویس MacroSetup بارگذاری می‌شود و ممکن است چند دقیقه تأخیر داشته باشد. خبرها به‌تنهایی سیگنال خرید یا فروش نیستند؛ واکنش قیمت و بازده اوراق و شاخص دلار هم باید بررسی شود. <a href="https://www.macrosetup.com/economic-calendar" target="_blank" rel="noopener" style="color:var(--gold)">مشاهده منبع تقویم</a></div></section>
 <div class="section-head"><h2>نمودار قیمت</h2><span>کندل‌ها</span></div>
 <div class="tf" role="group" aria-label="تایم فریم"><button class="active" data-tf="1m">۱ دقیقه</button><button data-tf="5m">۵ دقیقه</button><button data-tf="15m">۱۵ دقیقه</button></div>
 <div class="chart" id="chart" style="margin-top:10px"><div>▥<br><b>نمودار پس از اتصال داده نمایش داده می‌شود</b><br>برای جلوگیری از نمایش قیمت ساختگی، فعلاً چارت خالی است.</div></div>
@@ -40,37 +51,13 @@ footer{text-align:center;color:#687382;font-size:10px;margin:20px 0 8px}
 <div class="section-head"><h2>مدیریت معامله</h2><span>پس از تحلیل</span></div>
 <section class="card"><div class="grid"><div class="metric"><small>نقطه ورود</small><strong>—</strong></div><div class="metric"><small>حد ضرر (SL)</small><strong>—</strong></div><div class="metric"><small>هدف اول (TP1)</small><strong>—</strong></div><div class="metric"><small>هدف دوم (TP2)</small><strong>—</strong></div></div><div class="notice">این بخش پس از اتصال داده معتبر و تکمیل موتور تحلیل فعال می‌شود. هیچ قیمت یا سیگنال آزمایشی به‌عنوان داده واقعی نمایش داده نمی‌شود.</div></section>
 <footer>Gold AI · نسخه اولیه رابط آیفون · تحلیل‌ها تضمین سود نیستند.</footer>
-<nav class="tabs"><button class="active"><span>⌂</span>خانه</button><button onclick="document.querySelector('#chart').scrollIntoView({behavior:'smooth'})"><span>▥</span>نمودار</button><button onclick="document.querySelector('.signal').scrollIntoView({behavior:'smooth'})"><span>✦</span>سیگنال</button><button onclick="document.querySelector('.notice').scrollIntoView({behavior:'smooth'})"><span>⚙</span>راهنما</button></nav>
+<nav class="tabs"><button class="active" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span>⌂</span>خانه</button><button onclick="document.querySelector('#chart').scrollIntoView({behavior:'smooth'})"><span>▥</span>نمودار</button><button onclick="document.querySelector('#market-hours').scrollIntoView({behavior:'smooth'})"><span>◷</span>ساعت بازار</button><button onclick="document.querySelector('#economic-news').scrollIntoView({behavior:'smooth'})"><span>▤</span>اخبار</button><button onclick="document.querySelector('.signal').scrollIntoView({behavior:'smooth'})"><span>✦</span>سیگنال</button></nav>
 <script>
 document.querySelectorAll('[data-tf]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tf]').forEach(x=>x.classList.remove('active'));b.classList.add('active');}));
-async function refreshGoldPrice(){
-  const status=document.getElementById('connectionStatus');
-  const priceEl=document.getElementById('goldPrice');
-  const message=document.getElementById('priceMessage');
-  const updated=document.getElementById('priceUpdated');
-  try{
-    const response=await fetch('https://api.gold-api.com/price/XAU',{cache:'no-store'});
-    if(!response.ok) throw new Error('HTTP '+response.status);
-    const data=await response.json();
-    const price=Number(data.price);
-    if(!Number.isFinite(price)||price<=0) throw new Error('داده قیمت معتبر نیست');
-    priceEl.textContent=new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(price)+' USD';
-    const rawTime=data.updatedAt||data.updated_at||data.timestamp;
-    let timeText='زمان اعلام‌شده توسط منبع در دسترس نیست';
-    if(rawTime){const d=new Date(rawTime);if(!Number.isNaN(d.getTime()))timeText='آخرین به‌روزرسانی: '+d.toLocaleString('fa-IR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-    updated.textContent=timeText;
-    message.textContent='قیمت مرجع جهانی؛ ممکن است با نرخ لحظه‌ای بروکر Eplanet و اسپرد آن متفاوت باشد.';
-    status.textContent='● قیمت متصل است';
-    status.style.color='#32c997';status.style.borderColor='#286b58';status.style.background='#10251f';
-  }catch(error){
-    status.textContent='● خطا در دریافت قیمت';
-    status.style.color='#ff707b';status.style.borderColor='#713b43';status.style.background='#2a1519';
-    message.textContent='قیمت زنده دریافت نشد؛ اتصال اینترنت یا سرویس منبع را بررسی کن.';
-    console.error('Gold AI price error:',error);
-  }
-}
-refreshGoldPrice();
-setInterval(refreshGoldPrice,30000);
+function marketClock(zone){const now=new Date();const parts=new Intl.DateTimeFormat('en-GB',{timeZone:zone,hour:'2-digit',minute:'2-digit',hourCycle:'h23',weekday:'short'}).formatToParts(now);const get=t=>parts.find(p=>p.type===t)?.value;return {hour:Number(get('hour')),weekday:get('weekday'),text:new Intl.DateTimeFormat('fa-IR',{timeZone:zone,hour:'2-digit',minute:'2-digit'}).format(now)};}
+function updateSessions(){const sessions=[['Asia/Tokyo',9,18],['Europe/London',8,17],['America/New_York',8,17],['Australia/Sydney',8,17]];document.querySelectorAll('#sessionList .session-row').forEach((row,i)=>{const s=marketClock(sessions[i][0]),open=!['Sat','Sun'].includes(s.weekday)&&s.hour>=sessions[i][1]&&s.hour<sessions[i][2];const state=row.querySelector('.session-state');row.querySelector('.session-time').firstChild.textContent=s.text;state.textContent=['Sat','Sun'].includes(s.weekday)?'تعطیل آخر هفته':open?'باز است':'بسته است';state.className='session-state '+(open?'open':'closed');});}
+async function refreshGoldPrice(){const status=document.getElementById('connectionStatus'),priceEl=document.getElementById('goldPrice'),message=document.getElementById('priceMessage'),updated=document.getElementById('priceUpdated');try{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch('https://api.gold-api.com/price/XAU',{cache:'no-store',signal:controller.signal});}finally{clearTimeout(timer);}if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json(),price=Number(data.price);if(!Number.isFinite(price)||price<=0)throw new Error('پاسخ سرویس قیمت معتبر نیست');priceEl.textContent=new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(price)+' USD';const d=new Date(data.updatedAt);updated.textContent='آخرین به‌روزرسانی: '+(!Number.isNaN(d.getTime())?d.toLocaleTimeString('fa-IR'):'نامشخص');message.textContent='قیمت مرجع جهانی؛ نرخ Eplanet ممکن است به‌دلیل اسپرد و منبع قیمت متفاوت باشد.';status.textContent='● قیمت متصل است';status.style.color='#32c997';status.style.borderColor='#286b58';status.style.background='#10251f';}catch(error){status.textContent='● خطا در دریافت قیمت';status.style.color='#ff707b';status.style.borderColor='#713b43';status.style.background='#2a1519';message.textContent='دریافت قیمت ناموفق بود ('+(error.name==='AbortError'?'پایان مهلت اتصال':error.message)+'). دکمه تلاش دوباره را بزن.';console.error('Gold AI price error:',error);}}
+refreshGoldPrice();setInterval(refreshGoldPrice,30000);updateSessions();setInterval(updateSessions,30000);
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
 </body></html>
