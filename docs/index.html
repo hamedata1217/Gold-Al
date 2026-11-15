@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b0f"><meta name="description" content="Gold AI — داشبورد تحلیل تکنیکال طلا">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Gold AI">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="./icon.svg">
+<title>Gold AI | تحلیل طلا</title>
+<style>
+:root{color-scheme:dark;--bg:#090b0f;--panel:#12161d;--panel2:#171d26;--line:#252d39;--gold:#e9bd55;--muted:#8e9aaa;--text:#f3f5f7;--green:#32c997;--red:#ff707b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#3a2c12 0,transparent 36%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif;padding:env(safe-area-inset-top) 16px calc(90px + env(safe-area-inset-bottom));max-width:720px;margin-inline:auto}
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 22px}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#f8d77d,#a87921);display:grid;place-items:center;color:#17120a;font-weight:900;font-size:22px;box-shadow:0 5px 24px #d9a83b30}.brand b{font-size:18px;letter-spacing:.3px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.status{border:1px solid #644f24;color:#e9bd55;background:#2a2111;padding:7px 10px;border-radius:30px;font-size:11px;white-space:nowrap}
+h1{font-size:22px;margin:8px 0 4px}.sub{color:var(--muted);font-size:12px;margin:0 0 18px}.card{background:linear-gradient(145deg,#171c24,#10141a);border:1px solid var(--line);border-radius:20px;padding:17px;margin-bottom:13px;box-shadow:0 10px 35px #0003}.price-top{display:flex;justify-content:space-between;align-items:center}.eyebrow{color:var(--muted);font-size:12px}.symbol{font-size:13px;color:var(--gold);font-weight:700}.price{font-size:34px;font-weight:750;letter-spacing:.5px;margin:15px 0 4px}.unavailable{font-size:12px;color:var(--muted)}.price-foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:17px;padding-top:13px;color:var(--muted);font-size:11px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:21px 2px 11px}.section-head h2{font-size:15px;margin:0}.section-head span{font-size:11px;color:var(--muted)}
+.tf{display:flex;gap:7px}.tf button,.tab button{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:10px;padding:8px 13px;font:inherit;font-size:12px}.tf button.active{background:#3a2c12;border-color:#8b6929;color:var(--gold)}
+.chart{height:190px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#141a22,#0e1218);display:grid;place-items:center;text-align:center;padding:20px;color:var(--muted);font-size:12px;line-height:1.9;position:relative;overflow:hidden}.chart:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 37px,#ffffff08 38px),repeating-linear-gradient(90deg,transparent 0 48px,#ffffff07 49px)}.chart>*{position:relative}
+.signal{display:flex;align-items:center;gap:12px}.signal-icon{width:42px;height:42px;border-radius:13px;background:#252a32;display:grid;place-items:center;color:var(--gold);font-size:20px}.signal b{font-size:14px}.signal p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.metric{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:13px}.metric small{color:var(--muted);font-size:11px}.metric strong{display:block;margin-top:9px;font-size:14px;color:#dce2e9}
+.notice{border:1px solid #594923;background:#211b10;color:#d7c28c;border-radius:14px;padding:12px 14px;font-size:11px;line-height:1.9;margin-top:13px}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#0c1016ed;backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:10px 18px calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:space-around;max-width:720px;margin:auto}.tabs button{border:0;background:none;color:var(--muted);font:inherit;font-size:10px;display:grid;justify-items:center;gap:4px}.tabs button span{font-size:19px}.tabs button.active{color:var(--gold)}
+footer{text-align:center;color:#687382;font-size:10px;margin:20px 0 8px}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">Au</div><div><b>GOLD AI</b><small>دستیار هوشمند تحلیل طلا</small></div></div><div class="status">● اتصال داده برقرار نیست</div></header>
+<h1>داشبورد بازار</h1><p class="sub">نمای کلی XAU/USD · ابزار تحلیل تکنیکال</p>
+<section class="card">
+ <div class="price-top"><span class="eyebrow">قیمت جهانی طلا</span><span class="symbol">XAU / USD</span></div>
+ <div class="price">— — —</div><div class="unavailable">تا اتصال منبع قیمت، نرخ زنده نمایش داده نمی‌شود.</div>
+ <div class="price-foot"><span>آخرین به‌روزرسانی: —</span><span>منبع: متصل نشده</span></div>
+</section>
+<div class="section-head"><h2>نمودار قیمت</h2><span>کندل‌ها</span></div>
+<div class="tf" role="group" aria-label="تایم فریم"><button class="active" data-tf="1m">۱ دقیقه</button><button data-tf="5m">۵ دقیقه</button><button data-tf="15m">۱۵ دقیقه</button></div>
+<div class="chart" id="chart" style="margin-top:10px"><div>▥<br><b>نمودار پس از اتصال داده نمایش داده می‌شود</b><br>برای جلوگیری از نمایش قیمت ساختگی، فعلاً چارت خالی است.</div></div>
+<div class="section-head"><h2>وضعیت سیگنال</h2><span>تحلیل چندتایم‌فریمی</span></div>
+<section class="card">
+ <div class="signal"><div class="signal-icon">✦</div><div><b>در انتظار داده بازار</b><p>هنوز سیگنال خرید یا فروش معتبر محاسبه نشده است.</p></div></div>
+ <div class="grid" style="margin-top:15px"><div class="metric"><small>تایم‌فریم ۱ دقیقه</small><strong>در انتظار داده</strong></div><div class="metric"><small>تایم‌فریم ۵ دقیقه</small><strong>در انتظار داده</strong></div><div class="metric"><small>تایم‌فریم ۱۵ دقیقه</small><strong>در انتظار داده</strong></div><div class="metric"><small>قدرت سیگنال</small><strong>—</strong></div></div>
+</section>
+<div class="section-head"><h2>مدیریت معامله</h2><span>پس از تحلیل</span></div>
+<section class="card"><div class="grid"><div class="metric"><small>نقطه ورود</small><strong>—</strong></div><div class="metric"><small>حد ضرر (SL)</small><strong>—</strong></div><div class="metric"><small>هدف اول (TP1)</small><strong>—</strong></div><div class="metric"><small>هدف دوم (TP2)</small><strong>—</strong></div></div><div class="notice">این بخش پس از اتصال داده معتبر و تکمیل موتور تحلیل فعال می‌شود. هیچ قیمت یا سیگنال آزمایشی به‌عنوان داده واقعی نمایش داده نمی‌شود.</div></section>
+<footer>Gold AI · نسخه اولیه رابط آیفون · تحلیل‌ها تضمین سود نیستند.</footer>
+<nav class="tabs"><button class="active"><span>⌂</span>خانه</button><button onclick="document.querySelector('#chart').scrollIntoView({behavior:'smooth'})"><span>▥</span>نمودار</button><button onclick="document.querySelector('.signal').scrollIntoView({behavior:'smooth'})"><span>✦</span>سیگنال</button><button onclick="document.querySelector('.notice').scrollIntoView({behavior:'smooth'})"><span>⚙</span>راهنما</button></nav>
+<script>
+document.querySelectorAll('[data-tf]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tf]').forEach(x=>x.classList.remove('active'));b.classList.add('active');}));
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body></html>
