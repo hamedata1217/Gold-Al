@@ -72,11 +72,14 @@
     if(busy)return;busy=true;
     try {
       // Strict quote freshness: a stale/closed-market quote must never create a signal.
-      const quote=await json(API+"/api/XAUUSD?allowStale=false");
+      const quote=await json(API+"/api/XAUUSD");
       const quoteTime=Date.parse(quote.timestamp||quote.lastQuoteAt||"");
-      const age=(Date.now()-quoteTime)/1000;
+      const age=Number.isFinite(Number(quote.quoteAgeSeconds))?Number(quote.quoteAgeSeconds):(Date.now()-quoteTime)/1000;
       const price=Number(quote.mid||quote.bid);
-      if(!Number.isFinite(price)||price<=0||!Number.isFinite(age)||age>90||age< -30)throw new Error("قیمت زنده تازه نیست؛ بازار بسته یا داده با تأخیر است.");
+      if(!Number.isFinite(price)||price<=0)throw new Error("قیمت مرجع معتبر دریافت نشد.");
+      if(quote.marketState==="closed"||quote.stale===true||!Number.isFinite(age)||age>180||age< -30) {
+        throw new Error("بازار بسته است یا آخرین قیمت قدیمی است؛ نمودار ممکن است کندل‌های قبلی را نشان دهد، اما سیگنال زنده صادر نمی‌شود.");
+      }
       const results=await Promise.all(TIMEFRAMES.map(async tf=>{
         const d=await json(API+"/api/XAUUSD/ohlc?interval="+tf.key+"&limit=180");
         if(!Array.isArray(d.bars))throw new Error("ساختار کندل "+tf.key+" معتبر نیست");
