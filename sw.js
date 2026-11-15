@@ -1,1 +1,57 @@
-const CACHE='gold-ai-v1';self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html','./manifest.json','./icon.svg']))));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));self.addEventListener('fetch',e=>{if(e.request.method==='GET'&&new URL(e.request.url).origin===self.location.origin)e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request)));});
+const CACHE = "gold-ai-shell-v11";
+const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./chart.js", "./analysis.js"];
+
+self.addEventListener("install", event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    await cache.addAll(FILES);
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener("fetch", event => {
+  const request = event.request;
+  if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) return;
+
+  const isNavigation = request.mode === "navigate";
+  const isAppAsset = /\.(?:js|css|html|webmanifest)$/.test(new URL(request.url).pathname);
+
+  if (isNavigation || isAppAsset) {
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request, { cache: "no-store" });
+        if (response && response.ok) {
+          const cache = await caches.open(CACHE);
+          cache.put(request, response.clone()).catch(() => {});
+        }
+        return response;
+      } catch (error) {
+        return (await caches.match(request)) || (await caches.match("./index.html"));
+      }
+    })());
+    return;
+  }
+
+  event.respondWith((async () => {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    try {
+      const response = await fetch(request);
+      if (response && response.ok) {
+        const cache = await caches.open(CACHE);
+        cache.put(request, response.clone()).catch(() => {});
+      }
+      return response;
+    } catch (error) {
+      return caches.match("./index.html");
+    }
+  })());
+});
