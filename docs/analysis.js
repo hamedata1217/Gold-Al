@@ -113,7 +113,7 @@
         const tp1=side==="BUY"?entry+1.5*baseAtr:entry-1.5*baseAtr;
         const tp2=side==="BUY"?entry+2.5*baseAtr:entry-2.5*baseAtr;
         set("signalTitle",side==="BUY"?"▲ سیگنال BUY":"▼ سیگنال SELL");
-        set("signalText","تأیید هم‌جهت در هر سه تایم‌فریم · قدرت محاسباتی "+strength+"٪ · قیمت مرجع MT5: "+fmt(price));
+        set("signalText","تأیید هم‌جهت در هر سه تایم‌فریم · هم‌جهتی شاخص‌ها "+alignment+" از ۱۲ · قیمت مرجع Biquote: "+fmt(price));
         clearPlan("سناریوی "+side+" فعال است؛ قیمت‌ها مرجع‌اند و با Eplanet تطبیق داده نشده‌اند.");
         if(side==="BUY"){set("buyEntry",fmt(entry));set("buySl",fmt(sl));set("buyTp",fmt(tp2));}
         else{set("sellEntry",fmt(entry));set("sellSl",fmt(sl));set("sellTp",fmt(tp2));}
