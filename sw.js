@@ -1,4 +1,4 @@
-const CACHE = "gold-ai-shell-v12";
+const CACHE = "gold-ai-shell-v13";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./chart.js", "./analysis.js"];
 
 self.addEventListener("install", event => {
