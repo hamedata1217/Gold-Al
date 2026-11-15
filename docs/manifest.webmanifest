@@ -1,0 +1,12 @@
+{
+  "name": "Gold AI — تحلیل هوشمند طلا",
+  "short_name": "Gold AI",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090b0f",
+  "theme_color": "#090b0f",
+  "description": "داشبورد تحلیل تکنیکال XAU/USD"
+}
