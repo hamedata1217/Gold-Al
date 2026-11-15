@@ -49,13 +49,17 @@
     });
     document.getElementById("fibLevels").innerHTML=levels.slice(1,-1).map(lv=>{const p=up?hi-range*lv:lo+range*lv;return '<span>'+({"0.236":"23.6","0.382":"38.2","0.5":"50","0.618":"61.8","0.786":"78.6"}[String(lv)])+'٪ · '+p.toFixed(2)+'</span>';}).join("");
   }
+  function calcRsi(v,p=14){const out=Array(v.length).fill(null);if(v.length<=p)return out;let g=0,l=0;for(let i=1;i<=p;i++){const d=v[i]-v[i-1];if(d>0)g+=d;else l-=d;}let ag=g/p,al=l/p;out[p]=al===0?100:100-100/(1+ag/al);for(let i=p+1;i<v.length;i++){const d=v[i]-v[i-1];ag=(ag*(p-1)+Math.max(d,0))/p;al=(al*(p-1)+Math.max(-d,0))/p;out[i]=al===0?100:100-100/(1+ag/al);}return out;}
+  function updateSignals(bars,closes,fast,slow){const e12=ema(closes,12),e26=ema(closes,26),m=e12.map((v,i)=>v-e26[i]),ms=ema(m,9),h=m.map((v,i)=>v-ms[i]),rv=calcRsi(closes),markers=[];let prev='';for(let i=50;i<bars.length-1;i++){const buy=fast[i]>slow[i]&&closes[i]>fast[i]&&rv[i]>=52&&rv[i]<=70&&h[i]>0,sell=fast[i]<slow[i]&&closes[i]<fast[i]&&rv[i]<=48&&rv[i]>=30&&h[i]<0,side=buy?'BUY':sell?'SELL':'';if(side&&side!==prev)markers.push({time:bars[i].time,position:buy?'belowBar':'aboveBar',color:buy?'#32c997':'#ff707b',shape:buy?'arrowUp':'arrowDown',text:side,size:2});prev=side;}candleSeries.setMarkers(markers);const i=bars.length-2,buy=i>=50&&fast[i]>slow[i]&&closes[i]>fast[i]&&rv[i]>=52&&rv[i]<=70&&h[i]>0,sell=i>=50&&fast[i]<slow[i]&&closes[i]<fast[i]&&rv[i]<=48&&rv[i]>=30&&h[i]<0,title=document.querySelector('.signal b'),desc=document.querySelector('.signal p'),ico=document.querySelector('.signal-icon');if(title)title.textContent=buy?'BUY SIGNAL':sell?'SELL SIGNAL':'NO CONFIRMED SIGNAL';if(desc)desc.textContent=buy||sell?'Confirmed on the last closed candle using EMA20/50, RSI and MACD.':'EMA, RSI and MACD are not aligned yet.';if(ico){ico.textContent=buy?'BUY':sell?'SELL':'...';ico.style.color=buy?'#32c997':sell?'#ff707b':'#e9bd55';}}
   function render(bars){
     if(!makeChart())return;
     const closes=bars.map(b=>b.close),times=bars.map(b=>b.time);
     candleSeries.setData(bars);
-    ema20Series.setData(ema(closes,20).map((v,i)=>({time:times[i],value:v})));
-    ema50Series.setData(ema(closes,50).map((v,i)=>({time:times[i],value:v})));
+    const fast=ema(closes,20),slow=ema(closes,50);
+    ema20Series.setData(fast.map((v,i)=>({time:times[i],value:v})));
+    ema50Series.setData(slow.map((v,i)=>({time:times[i],value:v})));
     drawFib(bars);
+    updateSignals(bars,closes,fast,slow);
     const rv=rsi(closes);document.getElementById("rsiValue").textContent=rv===null?"داده ناکافی":rv.toFixed(1);
     const e12=ema(closes,12),e26=ema(closes,26),macd=e12.map((v,i)=>v-e26[i]),sig=ema(macd,9);
     document.getElementById("macdValue").textContent=macd.length?((macd.at(-1)-sig.at(-1))>=0?"مثبت ":"منفی ")+(macd.at(-1)-sig.at(-1)).toFixed(3):"—";
