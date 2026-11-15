@@ -47,10 +47,10 @@ footer{text-align:center;color:#687382;font-size:10px;margin:20px 0 8px}
 <div class="section-head" id="trade-plan"><h2>نقشه ورود و خروج</h2><span>BUY / SELL · XAU/USD</span></div>
 <section class="card">
  <div class="trade-plan">
-  <div class="trade-side buy"><h3>▲ سناریوی BUY</h3><div class="trade-state" id="buyPlanState">در انتظار کندل معتبر؛ هنوز ورود تأیید نشده است.</div>
+  <div class="trade-side buy"><h3>▲ سناریوی BUY</h3><div class="trade-state" id="buyPlanState">در انتظار داده زنده و کندل معتبر…</div>
    <div class="trade-level"><span>ورود (Entry)</span><b id="buyEntry">—</b></div><div class="trade-level"><span>حد سود (TP)</span><b id="buyTp">—</b></div><div class="trade-level"><span>حد ضرر (SL)</span><b id="buySl">—</b></div>
   </div>
-  <div class="trade-side sell"><h3>▼ سناریوی SELL</h3><div class="trade-state" id="sellPlanState">در انتظار کندل معتبر؛ هنوز ورود تأیید نشده است.</div>
+  <div class="trade-side sell"><h3>▼ سناریوی SELL</h3><div class="trade-state" id="sellPlanState">در انتظار داده زنده و کندل معتبر…</div>
    <div class="trade-level"><span>ورود (Entry)</span><b id="sellEntry">—</b></div><div class="trade-level"><span>حد سود (TP)</span><b id="sellTp">—</b></div><div class="trade-level"><span>حد ضرر (SL)</span><b id="sellSl">—</b></div>
   </div>
  </div>
@@ -58,11 +58,11 @@ footer{text-align:center;color:#687382;font-size:10px;margin:20px 0 8px}
 </section>
 <div class="section-head"><h2>وضعیت سیگنال</h2><span>تحلیل چندتایم‌فریمی</span></div>
 <section class="card">
- <div class="signal"><div class="signal-icon">✦</div><div><b>در انتظار داده بازار</b><p>هنوز سیگنال خرید یا فروش معتبر محاسبه نشده است.</p></div></div>
- <div class="grid" style="margin-top:15px"><div class="metric"><small>تایم‌فریم ۱ دقیقه</small><strong>در انتظار داده</strong></div><div class="metric"><small>تایم‌فریم ۵ دقیقه</small><strong>در انتظار داده</strong></div><div class="metric"><small>تایم‌فریم ۱۵ دقیقه</small><strong>در انتظار داده</strong></div><div class="metric"><small>قدرت سیگنال</small><strong>—</strong></div></div>
+ <div class="signal"><div class="signal-icon">✦</div><div><b id="signalTitle">در انتظار داده بازار</b><p id="signalText">در حال بررسی کندل‌های XAUUSD در تایم‌فریم‌های ۱، ۵ و ۱۵ دقیقه…</p></div></div>
+ <div class="grid" style="margin-top:15px"><div class="metric"><small>تایم‌فریم ۱ دقیقه</small><strong id="tf1State">در انتظار داده</strong></div><div class="metric"><small>تایم‌فریم ۵ دقیقه</small><strong id="tf5State">در انتظار داده</strong></div><div class="metric"><small>تایم‌فریم ۱۵ دقیقه</small><strong id="tf15State">در انتظار داده</strong></div><div class="metric"><small>قدرت سیگنال</small><strong id="signalStrength">—</strong></div></div>
 </section>
 <div class="section-head"><h2>مدیریت معامله</h2><span>پس از تحلیل</span></div>
-<section class="card"><div class="grid"><div class="metric"><small>نقطه ورود</small><strong>—</strong></div><div class="metric"><small>حد ضرر (SL)</small><strong>—</strong></div><div class="metric"><small>هدف اول (TP1)</small><strong>—</strong></div><div class="metric"><small>هدف دوم (TP2)</small><strong>—</strong></div></div><div class="notice">این بخش پس از اتصال داده معتبر و تکمیل موتور تحلیل فعال می‌شود. هیچ قیمت یا سیگنال آزمایشی به‌عنوان داده واقعی نمایش داده نمی‌شود.</div></section>
+<section class="card"><div class="grid"><div class="metric"><small>نقطه ورود</small><strong id="manageEntry">—</strong></div><div class="metric"><small>حد ضرر (SL)</small><strong id="manageSl">—</strong></div><div class="metric"><small>هدف اول (TP1)</small><strong id="manageTp1">—</strong></div><div class="metric"><small>هدف دوم (TP2)</small><strong id="manageTp2">—</strong></div></div><div class="notice">این بخش پس از اتصال داده معتبر و تکمیل موتور تحلیل فعال می‌شود. هیچ قیمت یا سیگنال آزمایشی به‌عنوان داده واقعی نمایش داده نمی‌شود.</div></section>
 <footer>Gold AI · نسخه اولیه رابط آیفون · تحلیل‌ها تضمین سود نیستند.</footer>
 <nav class="tabs"><button class="active" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span>⌂</span>خانه</button><button onclick="document.querySelector('#chart').scrollIntoView({behavior:'smooth'})"><span>▥</span>نمودار</button><button onclick="document.querySelector('#market-hours').scrollIntoView({behavior:'smooth'})"><span>◷</span>ساعت بازار</button><button onclick="document.querySelector('#economic-news').scrollIntoView({behavior:'smooth'})"><span>▤</span>اخبار</button><button onclick="document.querySelector('.signal').scrollIntoView({behavior:'smooth'})"><span>✦</span>سیگنال</button></nav>
 <script>
@@ -75,4 +75,5 @@ if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.se
 </script>
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js" crossorigin="anonymous"></script>
 <script src="./chart.js?v=5"></script>
+<script src="./analysis.js?v=1"></script>
 </body></html>
