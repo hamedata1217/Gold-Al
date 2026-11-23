@@ -1,5 +1,5 @@
-const CACHE = "gold-ai-shell-v17";
-const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./chart.js?v=9", "./analysis.js?v=6"];
+const CACHE = "gold-ai-shell-v18";
+const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./chart.js?v=10", "./analysis.js?v=7"];
 
 self.addEventListener("install", event => {
   event.waitUntil((async () => {
