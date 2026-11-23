@@ -4,7 +4,7 @@
   if(!el||!window.LightweightCharts)return;
   const API="https://biquote.io/api/XAUUSD/ohlc";
   const intervals={"1m":"1m","5m":"5m","15m":"15m"};
-  let tf="1m",chart,candles,ema20,ema50,busy=false,currentSignal=null,lastClosedTime=null;
+  let tf="1m",chart,candles,ema20,ema50,busy=false,currentSignal=null,lastClosedTime=null,tradeLines=[],srLines=[];
   const style=document.createElement("style");
   style.textContent="#chart{display:block;height:420px;padding:0;overflow:hidden;background:#0e1218;border:1px solid #303947}#chart:before{display:none}#chartSourceNote{margin:8px 2px 0;color:#8e9aaa;font-size:11px;line-height:1.8}";
   document.head.appendChild(style);
@@ -32,21 +32,39 @@
   const signalBadge=document.createElement("div");
   signalBadge.style.cssText="position:absolute;top:8px;left:8px;z-index:2;background:#101820ee;color:#aab4c2;border:1px solid #596575;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:800;direction:ltr";
   signalBadge.textContent="SIGNAL: WAIT";el.appendChild(signalBadge);
+  function clearLines(lines){lines.forEach(line=>{try{candles.removePriceLine(line);}catch(_){}});lines.length=0;}
   function applySignalMarker(){
     if(!candles||!lastClosedTime)return;
     if(!currentSignal||!["BUY","SELL"].includes(currentSignal.side)){
       candles.setMarkers([]);
+      clearLines(tradeLines);
       return;
     }
     const buy=currentSignal.side==="BUY";
+    const markerTime=Number.isFinite(currentSignal.time)
+      ? (candlesDataClosed.reduce((best,row)=>Math.abs(row.time*1000-currentSignal.time)<Math.abs(best.time*1000-currentSignal.time)?row:best,candlesDataClosed[0])||{}).time
+      : lastClosedTime;
     candles.setMarkers([{
-      time:lastClosedTime,
+      time:markerTime||lastClosedTime,
       position:buy?"belowBar":"aboveBar",
       color:buy?"#32c997":"#ff707b",
       shape:buy?"arrowUp":"arrowDown",
       text:buy?"BUY":"SELL"
     }]);
+    clearLines(tradeLines);
+    const levels=[
+      ["ENTRY",currentSignal.entry,"#e9bd55"],
+      ["STOP LOSS",currentSignal.sl,"#ff707b"],
+      ["TAKE PROFIT 1",currentSignal.tp1,"#32c997"],
+      ["TAKE PROFIT 2",currentSignal.tp2,"#65d6a8"]
+    ];
+    levels.forEach(([title,value,color])=>{
+      if(Number.isFinite(Number(value))&&Number(value)>0){
+        tradeLines.push(candles.createPriceLine({price:Number(value),color,lineWidth:2,lineStyle:2,axisLabelVisible:true,title}));
+      }
+    });
   }
+  let candlesDataClosed=[];
   window.addEventListener("gold-ai-signal",event=>{
     currentSignal=event.detail||null;
     const side=currentSignal.side;
@@ -55,6 +73,25 @@
     signalBadge.style.borderColor=side==="BUY"?"#286b58":side==="SELL"?"#713b43":"#596575";
     applySignalMarker();
   });
+  function drawSupportResistance(rows){
+    clearLines(srLines);
+    const data=rows.filter(b=>!b.isOpen);
+    if(data.length<12)return;
+    const pivots=[];
+    for(let i=3;i<data.length-3;i++){
+      const x=data[i];
+      const isHigh=data.slice(i-3,i).every(b=>x.high>=b.high)&&data.slice(i+1,i+4).every(b=>x.high>=b.high);
+      const isLow=data.slice(i-3,i).every(b=>x.low<=b.low)&&data.slice(i+1,i+4).every(b=>x.low<=b.low);
+      if(isHigh)pivots.push({price:x.high,type:"RESISTANCE",time:x.time});
+      if(isLow)pivots.push({price:x.low,type:"SUPPORT",time:x.time});
+    }
+    const last=data[data.length-1],range=Math.max(last.high-last.low,last.close*0.0008);
+    const supports=pivots.filter(p=>p.type==="SUPPORT"&&p.price<last.close).sort((a,b)=>Math.abs(last.close-a.price)-Math.abs(last.close-b.price)).slice(0,3);
+    const resistances=pivots.filter(p=>p.type==="RESISTANCE"&&p.price>last.close).sort((a,b)=>Math.abs(a.price-last.close)-Math.abs(b.price-last.close)).slice(0,3);
+    [...supports,...resistances].forEach(p=>{
+      srLines.push(candles.createPriceLine({price:p.price,color:p.type==="SUPPORT"?"#32c997":"#ff9b55",lineWidth:1,lineStyle:2,axisLabelVisible:true,title:p.type==="SUPPORT"?"SUPPORT":"RESISTANCE"}));
+    });
+  }
   function calcEma(data,period){
     const k=2/(period+1);let v=0,out=[];
     data.forEach((x,i)=>{if(i===period-1){v=data.slice(0,period).reduce((s,b)=>s+b.close,0)/period;out.push({time:x.time,value:v});}
@@ -72,8 +109,10 @@
         .filter(b=>Number.isFinite(b.time)&&[b.open,b.high,b.low,b.close].every(Number.isFinite)).sort((a,b)=>a.time-b.time);
       if(rows.length<2)throw new Error("کندل کافی دریافت نشد");
       const closedRows=rows.filter(b=>!b.isOpen);
+      candlesDataClosed=closedRows;
       lastClosedTime=(closedRows.length?closedRows[closedRows.length-1]:rows[rows.length-1]).time;
       candles.setData(rows.map(({isOpen,...b})=>b));
+      drawSupportResistance(rows);
       applySignalMarker();
       ema20.setData(calcEma(rows,20));ema50.setData(calcEma(rows,50));
       chart.timeScale().fitContent();
