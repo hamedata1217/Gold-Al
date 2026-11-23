@@ -27,8 +27,11 @@
   note.id="chartSourceNote";note.textContent="منبع کندل: Biquote · XAUUSD · برای نمایش قیمت بروکر Eplanet، اختلاف نرخ و اسپرد را در نظر بگیر.";
   el.insertAdjacentElement("afterend",note);
   const status=document.createElement("div");
-  status.style.cssText="position:absolute;top:8px;right:8px;z-index:2;background:#101820dd;color:#e9bd55;border:1px solid #303947;border-radius:8px;padding:5px 8px;font-size:10px";
+  status.style.cssText="position:absolute;top:8px;right:8px;z-index:2;background:#101820ee;color:#e9bd55;border:1px solid #303947;border-radius:8px;padding:6px 9px;font-size:11px;font-weight:700";
   status.textContent="در حال دریافت کندل…";el.appendChild(status);
+  const signalBadge=document.createElement("div");
+  signalBadge.style.cssText="position:absolute;top:8px;left:8px;z-index:2;background:#101820ee;color:#aab4c2;border:1px solid #596575;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:800;direction:ltr";
+  signalBadge.textContent="SIGNAL: WAIT";el.appendChild(signalBadge);
   function applySignalMarker(){
     if(!candles||!lastClosedTime)return;
     if(!currentSignal||!["BUY","SELL"].includes(currentSignal.side)){
@@ -46,6 +49,10 @@
   }
   window.addEventListener("gold-ai-signal",event=>{
     currentSignal=event.detail||null;
+    const side=currentSignal.side;
+    signalBadge.textContent=side==="BUY"?"▲ BUY":side==="SELL"?"▼ SELL":"SIGNAL: NO TRADE";
+    signalBadge.style.color=side==="BUY"?"#32c997":side==="SELL"?"#ff707b":"#aab4c2";
+    signalBadge.style.borderColor=side==="BUY"?"#286b58":side==="SELL"?"#713b43":"#596575";
     applySignalMarker();
   });
   function calcEma(data,period){
