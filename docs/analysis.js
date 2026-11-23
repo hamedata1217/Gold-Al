@@ -95,8 +95,8 @@
         throw new Error("آخرین کندل یک‌دقیقه‌ای تازه نیست؛ سیگنال زنده صادر نمی‌شود.");
       }
       const a=map["1m"].ind,b=map["5m"].ind,c=map["15m"].ind;
-      const buy=a.score>=3&&b.score>=3&&c.score>=2;
-      const sell=a.score<=-3&&b.score<=-3&&c.score<=-2;
+      const buy=a.score>=2&&b.score>=2&&c.score>=1;
+      const sell=a.score<=-2&&b.score<=-2&&c.score<=-1;
       const side=buy?"BUY":sell?"SELL":"NONE";
       const alignment=Math.abs(a.score)+Math.abs(b.score)+Math.abs(c.score);
       set("tf1State",(a.score>0?"صعودی":a.score<0?"نزولی":"خنثی")+" · RSI "+a.rsi.toFixed(0));
@@ -127,6 +127,7 @@
       set("signalTitle","NO TRADE · داده تأیید نشد");
       set("signalText",err.message+" هیچ سیگنالی تا دریافت داده تازه صادر نمی‌شود.");
       clearPlan("به‌دلیل نبود داده زنده و معتبر، ورود و خروج محاسبه نمی‌شود.");
+      window.dispatchEvent(new CustomEvent("gold-ai-signal",{detail:{side:"NONE",reason:err.message}}));
     } finally {busy=false;}
   }
   run();
