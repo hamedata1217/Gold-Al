@@ -95,8 +95,10 @@
         throw new Error("آخرین کندل یک‌دقیقه‌ای تازه نیست؛ سیگنال زنده صادر نمی‌شود.");
       }
       const a=map["1m"].ind,b=map["5m"].ind,c=map["15m"].ind;
-      const buy=a.score>=2&&b.score>=2&&c.score>=1;
-      const sell=a.score<=-2&&b.score<=-2&&c.score<=-1;
+      // Require directional agreement across 1m/5m/15m, but do not demand an unusually high score on the fast charts.
+      // This avoids suppressing every marker when the trend is aligned but one indicator is neutral.
+      const buy=a.score>=1&&b.score>=1&&c.score>=1;
+      const sell=a.score<=-1&&b.score<=-1&&c.score<=-1;
       const side=buy?"BUY":sell?"SELL":"NONE";
       const alignment=Math.abs(a.score)+Math.abs(b.score)+Math.abs(c.score);
       set("tf1State",(a.score>0?"صعودی":a.score<0?"نزولی":"خنثی")+" · RSI "+a.rsi.toFixed(0));
