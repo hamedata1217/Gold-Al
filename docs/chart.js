@@ -82,5 +82,5 @@
     tf=intervals[btn.dataset.tf]?btn.dataset.tf:"1m";load();
   }));
   new ResizeObserver(()=>chart.applyOptions({width:el.clientWidth})).observe(el);
-  load();setInterval(load,30000);
+  load();setInterval(load,10000);
 })();
