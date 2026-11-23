@@ -130,5 +130,5 @@
     } finally {busy=false;}
   }
   run();
-  setInterval(run,30000);
+  setInterval(run,10000);
 })();
