@@ -119,7 +119,7 @@
         else{set("sellEntry",fmt(entry));set("sellSl",fmt(sl));set("sellTp",fmt(tp2));}
         set("manageEntry",fmt(entry));set("manageSl",fmt(sl));set("manageTp1",fmt(tp1));set("manageTp2",fmt(tp2));
       }
-      window.dispatchEvent(new CustomEvent("gold-ai-signal",{detail:{side,price,time:quoteTime}}));
+      window.dispatchEvent(new CustomEvent("gold-ai-signal",{detail:{side,price,entry:side==="NONE"?null:entry,sl:side==="NONE"?null:sl,tp1:side==="NONE"?null:tp1,tp2:side==="NONE"?null:tp2,time:quoteTime}}));
       const stamp=new Date(quoteTime).toLocaleTimeString("fa-IR");
       set("signalText",($("signalText")?.textContent||"")+" · زمان آخرین کندل بسته‌شده: "+stamp);
     } catch(err) {
