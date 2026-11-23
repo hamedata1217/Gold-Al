@@ -50,7 +50,7 @@
   window.addEventListener("gold-ai-signal",event=>{
     currentSignal=event.detail||null;
     const side=currentSignal.side;
-    signalBadge.textContent=side==="BUY"?"▲ BUY":side==="SELL"?"▼ SELL":"SIGNAL: NO TRADE";
+    signalBadge.textContent=side==="BUY"?"▲ BUY":side==="SELL"?"▼ SELL":(currentSignal.reason?"DATA ERROR":"NO TRADE");
     signalBadge.style.color=side==="BUY"?"#32c997":side==="SELL"?"#ff707b":"#aab4c2";
     signalBadge.style.borderColor=side==="BUY"?"#286b58":side==="SELL"?"#713b43":"#596575";
     applySignalMarker();
