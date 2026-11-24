@@ -95,14 +95,11 @@
         throw new Error("آخرین کندل یک‌دقیقه‌ای تازه نیست؛ سیگنال زنده صادر نمی‌شود.");
       }
       const a=map["1m"].ind,b=map["5m"].ind,c=map["15m"].ind;
-      // Require directional agreement across 1m/5m/15m, but do not demand an unusually high score on the fast charts.
-      // This avoids suppressing every marker when the trend is aligned but one indicator is neutral.
+      // Strict confirmation: all three timeframes must independently agree.
       const bullishCount=[a,b,c].filter(x=>x.score>=1).length;
       const bearishCount=[a,b,c].filter(x=>x.score<=-1).length;
-      // Require agreement from at least two of three timeframes; neutral/opposing
-      // third timeframe lowers confidence but does not hide every valid setup.
-      const buy=bullishCount>=2&&bearishCount===0;
-      const sell=bearishCount>=2&&bullishCount===0;
+      const buy=a.score>=1&&b.score>=1&&c.score>=1;
+      const sell=a.score<=-1&&b.score<=-1&&c.score<=-1;
       const side=buy?"BUY":sell?"SELL":"NONE";
       const alignment=Math.abs(a.score)+Math.abs(b.score)+Math.abs(c.score);
       set("tf1State",(a.score>0?"صعودی":a.score<0?"نزولی":"خنثی")+" · RSI "+a.rsi.toFixed(0));
