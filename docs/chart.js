@@ -41,15 +41,16 @@
       return;
     }
     const buy=currentSignal.side==="BUY";
-    const markerTime=Number.isFinite(currentSignal.time)
-      ? (candlesDataClosed.reduce((best,row)=>Math.abs(row.time*1000-currentSignal.time)<Math.abs(best.time*1000-currentSignal.time)?row:best,candlesDataClosed[0])||{}).time
-      : lastClosedTime;
+    const markerTime=(candlesDataClosed[candlesDataClosed.length-1]||{}).time||lastClosedTime;
+    const markerPrice=Number(currentSignal.entry||currentSignal.price);
+    const markerText=(buy?"BUY":"SELL")+(Number.isFinite(markerPrice)?" "+markerPrice.toFixed(2):"");
     candles.setMarkers([{
-      time:markerTime||lastClosedTime,
+      time:markerTime,
       position:buy?"belowBar":"aboveBar",
       color:buy?"#32c997":"#ff707b",
       shape:buy?"arrowUp":"arrowDown",
-      text:buy?"BUY":"SELL"
+      text:markerText,
+      size:2
     }]);
     clearLines(tradeLines);
     const levels=[
@@ -60,7 +61,7 @@
     ];
     levels.forEach(([title,value,color])=>{
       if(Number.isFinite(Number(value))&&Number(value)>0){
-        tradeLines.push(candles.createPriceLine({price:Number(value),color,lineWidth:2,lineStyle:2,axisLabelVisible:true,title}));
+        tradeLines.push(candles.createPriceLine({price:Number(value),color,lineWidth:title==="ENTRY"?3:2,lineStyle:2,axisLabelVisible:title!=="TAKE PROFIT 1",title}));
       }
     });
   }
@@ -89,7 +90,7 @@
     const supports=pivots.filter(p=>p.type==="SUPPORT"&&p.price<last.close).sort((a,b)=>Math.abs(last.close-a.price)-Math.abs(last.close-b.price)).slice(0,3);
     const resistances=pivots.filter(p=>p.type==="RESISTANCE"&&p.price>last.close).sort((a,b)=>Math.abs(a.price-last.close)-Math.abs(b.price-last.close)).slice(0,3);
     [...supports,...resistances].forEach(p=>{
-      srLines.push(candles.createPriceLine({price:p.price,color:p.type==="SUPPORT"?"#32c997":"#ff9b55",lineWidth:1,lineStyle:2,axisLabelVisible:true,title:p.type==="SUPPORT"?"SUPPORT":"RESISTANCE"}));
+      srLines.push(candles.createPriceLine({price:p.price,color:p.type==="SUPPORT"?"#32c997":"#ff9b55",lineWidth:1,lineStyle:2,axisLabelVisible:false,title:p.type==="SUPPORT"?"SUPPORT":"RESISTANCE"}));
     });
   }
   function calcEma(data,period){
