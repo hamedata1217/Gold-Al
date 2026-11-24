@@ -62,7 +62,7 @@ footer{text-align:center;color:#687382;font-size:10px;margin:20px 0 8px}
  <div class="grid" style="margin-top:15px"><div class="metric"><small>تایم‌فریم ۱ دقیقه</small><strong id="tf1State">در انتظار داده</strong></div><div class="metric"><small>تایم‌فریم ۵ دقیقه</small><strong id="tf5State">در انتظار داده</strong></div><div class="metric"><small>تایم‌فریم ۱۵ دقیقه</small><strong id="tf15State">در انتظار داده</strong></div><div class="metric"><small>قدرت مجموع شاخص‌ها</small><strong id="signalStrength">—</strong></div></div>
 </section>
 <div class="section-head"><h2>مدیریت معامله</h2><span>پس از تحلیل</span></div>
-<section class="card"><div class="grid"><div class="metric"><small>نقطه ورود</small><strong id="manageEntry">—</strong></div><div class="metric"><small>حد ضرر (SL)</small><strong id="manageSl">—</strong></div><div class="metric"><small>هدف اول (TP1)</small><strong id="manageTp1">—</strong></div><div class="metric"><small>هدف دوم (TP2)</small><strong id="manageTp2">—</strong></div></div><div class="notice">این بخش پس از اتصال داده معتبر و تکمیل موتور تحلیل فعال می‌شود. هیچ قیمت یا سیگنال آزمایشی به‌عنوان داده واقعی نمایش داده نمی‌شود.</div></section>
+<section class="card"><div class="grid"><div class="metric"><small>نقطه ورود</small><strong id="manageEntry">—</strong></div><div class="metric"><small>حد ضرر (SL)</small><strong id="manageSl">—</strong></div><div class="metric"><small>هدف اول (TP1)</small><strong id="manageTp1">—</strong></div><div class="metric"><small>هدف دوم (TP2)</small><strong id="manageTp2">—</strong></div></div><div class="notice" id="manageNotice">پس از دریافت داده معتبر، سطوح ورود، حد ضرر و اهداف نمایش داده می‌شوند.</div></section>
 <footer>Gold AI · نسخه اولیه رابط آیفون · تحلیل‌ها تضمین سود نیستند.</footer>
 <nav class="tabs"><button class="active" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span>⌂</span>خانه</button><button onclick="document.querySelector('#chart').scrollIntoView({behavior:'smooth'})"><span>▥</span>نمودار</button><button onclick="document.querySelector('#market-hours').scrollIntoView({behavior:'smooth'})"><span>◷</span>ساعت بازار</button><button onclick="document.querySelector('#economic-news').scrollIntoView({behavior:'smooth'})"><span>▤</span>اخبار</button><button onclick="document.querySelector('.signal').scrollIntoView({behavior:'smooth'})"><span>✦</span>سیگنال</button></nav>
 <script>
@@ -75,5 +75,5 @@ if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.se
 </script>
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js" crossorigin="anonymous"></script>
 <script src="./chart.js?v=14"></script>
-<script src="./analysis.js?v=11"></script>
+<script src="./analysis.js?v=12"></script>
 </body></html>
