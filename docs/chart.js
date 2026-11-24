@@ -4,7 +4,7 @@
   if(!el||!window.LightweightCharts)return;
   const API="https://biquote.io/api/XAUUSD/ohlc";
   const intervals={"1m":"1m","5m":"5m","15m":"15m"};
-  let tf="1m",chart,candles,ema20,ema50,busy=false,currentSignal=null,lastClosedTime=null,tradeLines=[],srLines=[];
+  let tf="1m",chart,candles,ema20,ema50,busy=false,currentSignal=null,lastClosedTime=null,tradeLines=[],srLines=[],hasLoaded=false,fitNextLoad=true;
   const style=document.createElement("style");
   style.textContent="#chart{display:block;height:420px;padding:0;overflow:hidden;background:#0e1218;border:1px solid #303947}#chart:before{display:none}#chartSourceNote{margin:8px 2px 0;color:#8e9aaa;font-size:11px;line-height:1.8}";
   document.head.appendChild(style);
@@ -111,11 +111,14 @@
       const closedRows=rows.filter(b=>!b.isOpen);
       candlesDataClosed=closedRows;
       lastClosedTime=(closedRows.length?closedRows[closedRows.length-1]:rows[rows.length-1]).time;
+      const visibleRange=hasLoaded&&!fitNextLoad?chart.timeScale().getVisibleLogicalRange():null;
       candles.setData(rows.map(({isOpen,...b})=>b));
       drawSupportResistance(rows);
       applySignalMarker();
       ema20.setData(calcEma(rows,20));ema50.setData(calcEma(rows,50));
-      chart.timeScale().fitContent();
+      if(fitNextLoad||!hasLoaded){chart.timeScale().fitContent();fitNextLoad=false;}
+      else if(visibleRange){try{chart.timeScale().setVisibleLogicalRange(visibleRange);}catch(_){chart.timeScale().fitContent();}}
+      hasLoaded=true;
       status.textContent="● کندل‌ها دریافت شد · "+tf;
       status.style.color="#32c997";
     }catch(e){
@@ -125,7 +128,7 @@
   }
   document.querySelectorAll("[data-tf]").forEach(btn=>btn.addEventListener("click",()=>{
     document.querySelectorAll("[data-tf]").forEach(x=>x.classList.toggle("active",x===btn));
-    tf=intervals[btn.dataset.tf]?btn.dataset.tf:"1m";load();
+    tf=intervals[btn.dataset.tf]?btn.dataset.tf:"1m";fitNextLoad=true;load();
   }));
   new ResizeObserver(()=>chart.applyOptions({width:el.clientWidth})).observe(el);
   load();setInterval(load,10000);
