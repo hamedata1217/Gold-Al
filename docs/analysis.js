@@ -117,9 +117,17 @@
         set("signalTitle",side==="BUY"?"▲ سیگنال BUY":"▼ سیگنال SELL");
         set("signalText","تأیید هم‌جهت در هر سه تایم‌فریم · هم‌جهتی شاخص‌ها "+alignment+" از ۱۲ · قیمت مرجع Biquote: "+fmt(price));
         clearPlan("سناریوی "+side+" فعال است؛ قیمت‌ها مرجع‌اند و با Eplanet تطبیق داده نشده‌اند.");
-        if(side==="BUY"){set("buyEntry",fmt(entry));set("buySl",fmt(sl));set("buyTp",fmt(tp2));}
-        else{set("sellEntry",fmt(entry));set("sellSl",fmt(sl));set("sellTp",fmt(tp2));}
+        if(side==="BUY"){
+          set("buyEntry",fmt(entry));set("buySl",fmt(sl));set("buyTp",fmt(tp2));
+          set("buyPlanState","▲ سناریوی BUY فعال است؛ ورود فقط با بررسی اسپرد و قیمت بروکر.");
+          set("sellPlanState","سناریوی SELL غیرفعال است؛ منتظر سیگنال مستقل فروش بمان.");
+        } else {
+          set("sellEntry",fmt(entry));set("sellSl",fmt(sl));set("sellTp",fmt(tp2));
+          set("sellPlanState","▼ سناریوی SELL فعال است؛ ورود فقط با بررسی اسپرد و قیمت بروکر.");
+          set("buyPlanState","سناریوی BUY غیرفعال است؛ منتظر سیگنال مستقل خرید بمان.");
+        }
         set("manageEntry",fmt(entry));set("manageSl",fmt(sl));set("manageTp1",fmt(tp1));set("manageTp2",fmt(tp2));
+        set("manageNotice","سطوح معامله بر اساس ATR کندل‌های Biquote محاسبه شده‌اند؛ پیش از ورود، قیمت و اسپرد Eplanet را بررسی کن.");
       }
       window.dispatchEvent(new CustomEvent("gold-ai-signal",{detail:{side,price,entry:side==="NONE"?null:price,sl:side==="NONE"?null:(side==="BUY"?price-1.5*a.atr:price+1.5*a.atr),tp1:side==="NONE"?null:(side==="BUY"?price+1.5*a.atr:price-1.5*a.atr),tp2:side==="NONE"?null:(side==="BUY"?price+2.5*a.atr:price-2.5*a.atr),time:quoteTime}}));
       const stamp=new Date(quoteTime).toLocaleTimeString("fa-IR");
